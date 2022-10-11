@@ -6,7 +6,7 @@ export const insertData = async (
 	data: FormData
 ): Promise<{
 	status: number
-	response: TClassification[]
+	response: string
 }> => {
 	const resp = await API.post('upload-image', data)
 		.then(({ data, status }) => {
@@ -15,7 +15,7 @@ export const insertData = async (
 			return { status, response: data }
 		})
 		.catch(err => {
-			return { status: err.status, response: [] }
+			return { status: err.status, response: null }
 		})
 
 	return resp

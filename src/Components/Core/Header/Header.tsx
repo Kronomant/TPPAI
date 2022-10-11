@@ -1,17 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 
 import { HStack, Text, Image, Flex } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 
 const Header = () => {
-	const [border, setBorder] = useState<string>('white')
 	const route = useRouter()
-
-	const handleChangeHeader = () => {
-		console.log(window.scrollY)
-		if (window.scrollY > 40) setBorder('blue')
-		else setBorder('white')
-	}
 
 	const handleScroll = (ref: string) => {
 		const elementToview = document.getElementById(ref)
@@ -23,18 +16,14 @@ const Header = () => {
 	return (
 		<HStack
 			position="sticky"
+			zIndex={3}
 			top="0"
 			p="20px 32px"
 			justifyContent="space-between"
-			backgroundColor="white"
-			border="2px"
-			borderColor={border}
+			color={'white'}
+			backgroundColor="#0f0e17"
 		>
-			<Flex
-				onScroll={() => handleChangeHeader()}
-				alignItems="center"
-				gap="12px"
-			>
+			<Flex alignItems="center" gap="12px">
 				<Image w="24px" height="24px" src="/favorite.png" />
 				<Text fontSize="2xl" fontFamily="Poppins" fontWeight="semibold">
 					TI VI

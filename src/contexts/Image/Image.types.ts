@@ -6,7 +6,7 @@ export type TClassification = {
 	percent: number
 }
 export interface IImageContext {
-	classifications: TClassification[]
+	classifications: string
 	handleGetAllData: () => Promise<void>
 	handleInsertData: (data: FormData) => Promise<void>
 }

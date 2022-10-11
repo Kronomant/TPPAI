@@ -10,7 +10,7 @@ interface AppProps {
 }
 
 const ImageProvider: React.FC<AppProps> = ({ children }: AppProps) => {
-	const [classifications, setClassifications] = useState<TClassification[]>([])
+	const [classifications, setClassifications] = useState<string>()
 
 	const handleGetAllData = useCallback(async () => {
 		const { response, status } = await getData()
