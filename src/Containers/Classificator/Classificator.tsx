@@ -27,6 +27,7 @@ const Classificator = () => {
 	const [output, setOutput] = useState(null)
 	const [preview, setPreview] = useState<string>()
 	const [nextStep, setNextStep] = useState<boolean>(false)
+	const [result, setResult] = useState<boolean>(false)
 	const [cropState, setCropState] = useState<File>(null)
 	const { classifications } = useImageProcessing()
 	const refImage = useRef<HTMLInputElement>(null)
@@ -87,7 +88,8 @@ const Classificator = () => {
 
 	const resultImage = useMemo(
 		() =>
-			classifications?.length > 0 && (
+			classifications?.length > 0 &&
+			result && (
 				<Flex>
 					<Image
 						h="250px"
@@ -275,7 +277,7 @@ const Classificator = () => {
 							form={form}
 							preview={preview}
 							setPreview={setPreview}
-							setNextStep={setNextStep}
+							setResult={setResult}
 						/>
 					</Flex>
 				)}

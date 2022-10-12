@@ -11,7 +11,7 @@ interface IInputImageProps {
 	form: FormData
 	crop: File
 	setPreview: React.Dispatch<React.SetStateAction<string>>
-	setNextStep: React.Dispatch<React.SetStateAction<boolean>>
+	setResult: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const InputImage: React.FC<IInputImageProps> = ({
@@ -19,18 +19,21 @@ const InputImage: React.FC<IInputImageProps> = ({
 	form,
 	crop,
 	setPreview,
-	setNextStep
+	setResult
 }) => {
 	const [loadingImage, setLoadingImage] = useState<boolean>(false)
 	const refImage = useRef<HTMLInputElement>(null)
 
-	const { handleInsertData } = useImageProcessing()
+	const { handleInsertData, setClassifications } = useImageProcessing()
 
 	const handleInputImage = async (file: File) => {
+		const form2 = new FormData()
 		setLoadingImage(true)
 		// await sleep(1000)
-		form.append('imageFiles', file)
-		form.append('imageCrop', crop)
+		form2.append('imageFiles', file)
+		form2.append('imageCrop', crop)
+		await handleInsertData(form2)
+		setResult(true)
 		// form.append('imageCrop', file)
 		console.log(form)
 		const objectUrl = URL.createObjectURL(file)
@@ -45,7 +48,7 @@ const InputImage: React.FC<IInputImageProps> = ({
 		await handleInsertData(form)
 		// form.append('imageFiles', null)
 		console.log(form)
-		setNextStep(true)
+		setResult(true)
 	}, [])
 
 	const handleOpenFileReader = (): void => {
@@ -57,6 +60,7 @@ const InputImage: React.FC<IInputImageProps> = ({
 	const handleClickIcon = () => {
 		if (!loadingImage) {
 			handleOpenFileReader()
+			// setClassifications(null)
 		}
 	}
 
@@ -89,7 +93,7 @@ const InputImage: React.FC<IInputImageProps> = ({
 				<ImageCover>
 					<ImageContainer onClick={handleClickIcon}>
 						{loadingImage && <Loading />}
-						<Icon as={IoMdImage} height={5} width={5} color="pink.500" />
+						<Icon as={IoMdImage} height={5} width={5} color="#f25f4c" />
 						<input
 							type="file"
 							formEncType="multipart/form-data"
@@ -107,11 +111,11 @@ const InputImage: React.FC<IInputImageProps> = ({
 				</ImageCover>
 				{preview && (
 					<Button
-						_hover={{ background: '#194077', color: 'pink.300' }}
+						_hover={{ background: '#f25f4c' }}
 						w="100px"
-						rightIcon={<Icon as={AiOutlineSend} color="pink.400" />}
-						bgColor="#0C1E39"
-						color="pink.400"
+						rightIcon={<Icon as={AiOutlineSend} color="white" />}
+						bgColor="orange.400"
+						color="white"
 						onClick={() => handleInsertImage()}
 					>
 						Enviar

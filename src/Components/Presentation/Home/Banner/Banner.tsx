@@ -47,7 +47,7 @@ const Banner: React.FC = () => {
 						A osteoartrite (artrose) é uma doença que se caracteriza pelo
 						desgaste da cartilagem articular e por alterações ósseas nas
 						articulações. O raio X é o principal exame para diagnóstico da
-						doença que é lassificada pela escala de Kellgren & Lawrence (KL) ,
+						doença que é classificada pela escala de Kellgren & Lawrence (KL) ,
 						de acordo com o seu grau de severidade. O diagnóstico de artrose é
 						confirmado para ({`KL > 1`}).
 					</Text>

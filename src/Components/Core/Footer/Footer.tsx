@@ -15,7 +15,7 @@ const Footer = () => (
 		<Flex>
 			<Text mt={4} fontSize="md" color="white">
 				Aplicação desenvolvida pelos alunos: Isabela Aguilar, Lucas Milard e
-				Rossana Oliveira para a disciplina de Trabalho Interdisciplinar VI
+				Rossana Oliveira para a disciplina de Processamento e análise de Images
 			</Text>
 		</Flex>
 	</Flex>

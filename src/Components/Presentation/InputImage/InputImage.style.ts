@@ -23,7 +23,7 @@ export const ImageCover = styled.div`
 	height: 400px;
 	width: 800px;
 	margin: 16px 0;
-	border: 2px dashed #d53f8c;
+	border: 2px dashed #f25f4c;
 
 	img {
 		object-fit: contain;
