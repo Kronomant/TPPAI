@@ -13,24 +13,23 @@ const References: React.FC = () => (
 		id="References"
 		scrollMargin="160px"
 		flexDir="column"
+		maxW="1400px"
 		alignItems="center"
-		w={'80%'}
 		mb={24}
 	>
 		<Text
 			fontFamily="Poppins"
-			fontSize="4xl"
+			fontSize="5xl"
 			fontWeight="semibold"
 			color="#0C1E39"
 			mb={4}
-			// textShadow="3px 4px var(--chakra-colors-pink-300)"
 		>
 			Trabalhos relacionados
 		</Text>
 		<Text
-			color="pink.400"
+			color="#f25f4c"
 			fontFamily="Poppins"
-			fontSize="xl"
+			fontSize="2xl"
 			fontWeight="hairline"
 			mb={16}
 		>
@@ -42,6 +41,7 @@ const References: React.FC = () => (
 					<ReferencesCard
 						title={item.name}
 						link={item.link}
+						image={item.image}
 						description={item.description}
 					/>
 				</SwiperSlide>

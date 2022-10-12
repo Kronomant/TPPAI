@@ -8,10 +8,11 @@ const Devs: React.FC = () => (
 		id="Devs"
 		scrollMargin="60px"
 		h="100vh"
+		w="100%"
 		margin=" 0px 0px 60px"
 		flexDir="column"
 		gap={8}
-		bgColor="#fffffe"
+		bgColor="#0f0e17"
 		alignItems="center"
 	>
 		<Flex margin={'60px 0'} flexDir="column" alignItems="center">
@@ -19,7 +20,7 @@ const Devs: React.FC = () => (
 				fontFamily="Poppins"
 				fontSize="5xl"
 				fontWeight="semibold"
-				color="#0f0e17"
+				color="#fffffe"
 				mb={4}
 				// textShadow="3px 4px var(--chakra-colors-pink-300)"
 			>
@@ -28,7 +29,7 @@ const Devs: React.FC = () => (
 			<Text
 				color="#f25f4c"
 				fontFamily="Poppins"
-				fontSize="lg"
+				fontSize="2xl"
 				fontWeight="hairline"
 			>
 				Sobre nós

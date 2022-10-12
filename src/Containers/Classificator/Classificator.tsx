@@ -27,9 +27,8 @@ const Classificator = () => {
 	const [output, setOutput] = useState(null)
 	const [preview, setPreview] = useState<string>()
 	const [nextStep, setNextStep] = useState<boolean>(false)
-	const [result, setResult] = useState<boolean>(false)
 	const [cropState, setCropState] = useState<File>(null)
-	const { handleInsertData, classifications } = useImageProcessing()
+	const { classifications } = useImageProcessing()
 	const refImage = useRef<HTMLInputElement>(null)
 
 	console.log(classifications)
@@ -47,11 +46,6 @@ const Classificator = () => {
 			refImage?.current?.click()
 		}
 	}
-
-	const handleSendData = useCallback(async () => {
-		form.append('imageCrop', cropState)
-		await handleInsertData(form)
-	}, [cropState, form])
 
 	const cropImageNow = useCallback(() => {
 		const canvas = document.createElement('canvas')
@@ -107,14 +101,12 @@ const Classificator = () => {
 
 	return (
 		<Container>
-			<Image h="250px" src="/images/nebula.png" objectFit="cover" />
 			<Flex
 				w="100%"
-				minH="70vh"
+				minH="100vh"
 				margin="32px auto"
 				maxW="1400px"
 				flexDir="column"
-				justifyContent="space-around"
 				alignItems="center"
 			>
 				<Grid>
@@ -209,12 +201,15 @@ const Classificator = () => {
 					) : (
 						<>
 							<Flex flexDir="column">
-								<Text>Funcionamento</Text>
-								<Text>
+								<Text fontSize="3xl" fontWeight="semibold">
+									Como Funciona ?
+								</Text>
+								<Text mt={4} fontSize="xl" color="gray.600">
 									Escolha uma imagem, recorte a area desejada após isso escolha
 									outra imagem para buscar o recorte nela
 								</Text>
 							</Flex>
+							<Image src="" />
 							<Button
 								bgColor="#ff8906"
 								_hover={{ bgColor: '#f25f4c' }}

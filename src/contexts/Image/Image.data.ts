@@ -1,23 +1,9 @@
 export const referencesData = [
 	{
-		name: 'Classificação de Objetos Astronômicos em Estrelas e Gálaxias Usando Algoritmo J4.8',
+		name: 'Fully automatic knee osteoarthritis severity grading using deep neural networks with a novel ordinal loss',
 		description:
-			'Este trabalho descreve o algoritmo de construção de árvore de decisão (J4.8). Dados do projeto Sloan Digital Sky Survey (SDSS) foram usados para treinamento e validação dos classificadores desenvolvidos. Os classificadores apresentaram índices de acerto, sobre oconjunto de teste, superiores a 98% para a classificação de estrelas e superiores a 99% para a classificação de galáxias. ',
-		link: 'http://mtc-m16c.sid.inpe.br/col/sid.inpe.br/mtc-m18@80/2010/07.21.13.53/doc/Renata_Rocha.pdf',
-		image: ''
-	},
-	{
-		name: 'Um Estudo Sobre Identificação de Aglomerados de Galáxias',
-		description:
-			'Neste artigo, é apresentada a implementação de um algoritmo capaz de classificar e remover as estrelas de imagens. O objetivo é aprimorar não apenas os estudos existentes em torno de aglomerados de galáxias, mas também para ajudar o desenvolvimento empesquisas astronômicas com imagens espaciais tratadas disponíveis',
-		link: 'https://periodicos.univali.br/index.php/acotb/article/view/16729',
-		image: ''
-	},
-	{
-		name: 'Star-galaxy Classification Using Deep Convolutional Neural Networks',
-		description:
-			'Neste trabalho é apresentada uma estrutura de classificação estrela-galáxia que usa redes neurais convolucionais profundas (ConvNets) diretamente nos valores de pixel calibrados e reduzidos. Usando dados do Sloan Digital Sky Survey (SDSS) e do Canada-France-Hawaii Telescope Lensing Survey (CFHTLenS), é demonstrado que as ConvNets são capazes de produzir classificações probabilísticas precisas e bem calibradas que são competitivas com as técnicas convencionais de aprendizado de máquina.',
-		link: 'http://mtc-m16c.sid.inpe.br/col/sid.inpe.br/mtc-m18@80/2010/07.21.13.53/doc/Renata_Rocha.pdf',
-		image: ''
+			'Knee osteoarthritis (OA) is one major cause of activity limitation and physical disability in older adults. Early detection and intervention can help slow down the OA degeneration. Physicians grading based on visual inspection is subjective, varied across interpreters, and highly relied on their experience. In this paper, we successively apply two deep convolutional neural networks (CNN) to automatically measure the knee OA severity, as assessed by the Kellgren-Lawrence (KL) grading system. Firstly, considering the size of knee joints distributed in X-ray images with small variability, we detect knee joints using a customized one-stage YOLOv2 network. Secondly, we fine-tune the most popular CNN models, including variants of ResNet, VGG, and DenseNet as well as InceptionV3, to classify the detected knee joint images with a novel adjustable ordinal loss. To be specific, motivated by the ordinal nature of the knee KL grading task, we assign higher penalty to misclassification with larger distance between the predicted KL grade and the real KL grade. The baseline X-ray images from the Osteoarthritis Initiative (OAI) dataset are used for evaluation. ',
+		link: 'https://pubmed.ncbi.nlm.nih.gov/31238184/',
+		image: '/images/article.png'
 	}
 ]

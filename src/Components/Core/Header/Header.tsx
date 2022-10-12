@@ -16,6 +16,8 @@ const Header = () => {
 	return (
 		<HStack
 			position="sticky"
+			borderBottom="1px solid"
+			borderColor="gray.700"
 			zIndex={3}
 			top="0"
 			p="20px 32px"
@@ -26,13 +28,13 @@ const Header = () => {
 			<Flex alignItems="center" gap="12px">
 				<Image w="24px" height="24px" src="/favorite.png" />
 				<Text fontSize="2xl" fontFamily="Poppins" fontWeight="semibold">
-					TI VI
+					TP-PAI
 				</Text>
 			</Flex>
 
 			<HStack spacing={20} justifyContent="space-between">
 				<Text
-					_hover={{ color: 'var(--chakra-colors-pink-400)' }}
+					_hover={{ color: 'var(--chakra-colors-orange-400)' }}
 					fontFamily="Poppins"
 					cursor="pointer"
 					onClick={() => handleScroll('Home')}
@@ -40,7 +42,7 @@ const Header = () => {
 					Home
 				</Text>
 				<Text
-					_hover={{ color: 'var(--chakra-colors-pink-400)' }}
+					_hover={{ color: 'var(--chakra-colors-orange-400)' }}
 					fontFamily="Poppins"
 					cursor="pointer"
 					onClick={() => handleScroll('Devs')}
@@ -48,7 +50,7 @@ const Header = () => {
 					Sobre nós
 				</Text>
 				<Text
-					_hover={{ color: 'var(--chakra-colors-pink-400)' }}
+					_hover={{ color: 'var(--chakra-colors-orange-400)' }}
 					fontFamily="Poppins"
 					cursor="pointer"
 					onClick={() => handleScroll('Dataset')}
@@ -56,7 +58,7 @@ const Header = () => {
 					Base de Dados
 				</Text>
 				<Text
-					_hover={{ color: 'var(--chakra-colors-pink-400)' }}
+					_hover={{ color: 'var(--chakra-colors-orange-400)' }}
 					fontFamily="Poppins"
 					cursor="pointer"
 					onClick={() => handleScroll('References')}

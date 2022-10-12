@@ -6,14 +6,15 @@ import { AiOutlineSend } from 'react-icons/ai'
 const ReferencesCard: React.FC<{
 	link: string
 	title: string
+	image: string
 	description: string
-}> = ({ link, title, description }) => (
-	<Flex margin="24px 64px" w="100%" gap={16} height="400px">
+}> = ({ link, title, description, image }) => (
+	<Flex margin="24px 64px" w="100%" gap={16}>
 		<Image
 			borderRadius="8px"
 			boxShadow=" rgba(100, 100, 111, 0.1) 0px 7px 29px 0px"
 			w="25%"
-			src="/images/references.png"
+			src={image}
 		/>
 		<Flex w="60%" flexDir="column" gap={8}>
 			<Text fontSize="xl" fontWeight="semibold">
@@ -24,15 +25,15 @@ const ReferencesCard: React.FC<{
 			</Text>
 
 			<Button
-				_hover={{ background: '#194077', color: 'pink.300' }}
+				_hover={{ background: '#f25f4c' }}
 				w="150px"
 				h="50px"
-				borderRadius="12px"
+				borderRadius="8px"
 				rightIcon={
-					<Icon as={AiOutlineSend} height="24px" w="24px" color="pink.400" />
+					<Icon as={AiOutlineSend} height="24px" w="24px" color="white" />
 				}
-				bgColor="#0C1E39"
-				color="pink.400"
+				bgColor="orange.400"
+				color="white"
 				onClick={() => window.open(link, '_blank')}
 			>
 				Acessar

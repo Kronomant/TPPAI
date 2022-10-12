@@ -22,13 +22,11 @@ const Banner: React.FC = () => {
 					<Flex flexDir="column" gap={4}>
 						<Text
 							fontFamily="Poppins"
-							fontSize="6xl"
-							fontWeight="semibold"
+							fontSize="5xl"
+							fontWeight="bold"
 							color="#fffffe"
-							// textShadow="3px 4px var(--chakra-colors-pink-400)"
 						>
-							Classificando <br />
-							Raio x de joelhos
+							Classificando <br /> Osteoartrite femorotibial
 						</Text>
 						<Text
 							color="orange.400"
@@ -46,28 +44,25 @@ const Banner: React.FC = () => {
 						color="gray.400"
 						fontWeight="light"
 					>
-						Esse trabalho tem como objetivo desenvolver uma solução eficiente
-						para classificar imagens de uma base de dados e identificá-las como
-						estrelas ou galáxias aplicando os conhecimentos das disciplinas de
-						computação distribuída, processamento e análise de imagens e
-						computação paralela
+						A osteoartrite (artrose) é uma doença que se caracteriza pelo
+						desgaste da cartilagem articular e por alterações ósseas nas
+						articulações. O raio X é o principal exame para diagnóstico da
+						doença que é lassificada pela escala de Kellgren & Lawrence (KL) ,
+						de acordo com o seu grau de severidade. O diagnóstico de artrose é
+						confirmado para ({`KL > 1`}).
 					</Text>
 					<Button
-						_hover={{ background: '#194077', color: 'pink.300' }}
-						w="100px"
+						_hover={{ background: '#f25f4c', color: 'white' }}
+						w="150px"
 						h="50px"
+						p={6}
 						margin={'60px 0 100px'}
-						borderRadius="12px"
+						borderRadius="4px"
 						rightIcon={
-							<Icon
-								as={AiOutlineSend}
-								height="24px"
-								w="24px"
-								color="pink.400"
-							/>
+							<Icon as={AiOutlineSend} height="24px" w="24px" color="white" />
 						}
-						bgColor="#0C1E39"
-						color="pink.400"
+						bgColor="orange.400"
+						color="white"
 						onClick={() => {
 							router.push('/classificator')
 						}}
@@ -79,7 +74,7 @@ const Banner: React.FC = () => {
 						gap={2}
 						cursor="pointer"
 						onClick={() => {
-							const elementToview = document.getElementById('Devs')
+							const elementToview = document.getElementById('Dataset')
 							elementToview.scrollIntoView({
 								behavior: 'smooth',
 								block: 'start'
@@ -91,9 +86,9 @@ const Banner: React.FC = () => {
 							as={BiMouse}
 							height="32px"
 							w="32px"
-							color="pink.400"
+							color="orange.400"
 						/>
-						<Text fontFamily="Poppins" color="#0C1E39" fontSize="xl">
+						<Text fontFamily="Poppins" color="white" fontSize="xl">
 							Ver mais
 						</Text>
 						<Icon
@@ -101,7 +96,7 @@ const Banner: React.FC = () => {
 							as={AiOutlineArrowDown}
 							height="24px"
 							w="24px"
-							color="pink.400"
+							color="orange.400"
 						/>
 					</Flex>
 				</Flex>
