@@ -2,9 +2,9 @@ import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import { Button, Flex, Grid, HStack, Text, Image } from '@chakra-ui/react'
 import ReactCrop, { Crop } from 'react-image-crop'
-import InputImage from '../InputImage'
-import { useImageProcessing } from 'contexts/Image'
+import { TImageProcessing, useImageProcessing } from 'contexts/Image'
 import FormData from 'form-data'
+import XGBoost from '../XGBoost'
 
 const Correlation = () => {
 	const [src, setSrc] = useState(null)
@@ -12,15 +12,13 @@ const Correlation = () => {
 	const [image, setImage] = useState<HTMLImageElement>(null)
 	const [output, setOutput] = useState(null)
 
-	const [nextStep, setNextStep] = useState<boolean>(false)
-	const [result, setResult] = useState<boolean>(false)
+	const [imageCompare, setImageCompare] = useState<File>(null)
 	const [cropState, setCropState] = useState<File>(null)
-	const { classifications } = useImageProcessing()
+	const [data, setData] = useState<TImageProcessing>()
+	const { classifications, handleInsertData } = useImageProcessing()
 	const refImage = useRef<HTMLInputElement>(null)
 
 	console.log(classifications)
-
-	const form = new FormData()
 
 	const selectImage = useCallback((file: File) => {
 		if (file) {
@@ -71,41 +69,29 @@ const Correlation = () => {
 		setCrop(null)
 	}, [image, crop])
 
-	const resultImage = useMemo(
-		() =>
-			classifications?.correlation.length > 0 &&
-			result && (
-				<Flex>
-					<Image
-						h="250px"
-						src={`data:image/jpg;base64,${classifications.correlation}`}
-						objectFit="cover"
-					/>
-				</Flex>
-			),
-		[classifications]
-	)
-
 	const CropSection = useMemo(
 		() => (
 			<Flex
 				h="800px"
 				flexDir="column"
-				w="500px"
+				w="100%"
 				py={16}
 				gap={8}
+				alignItems="center"
 				justifyContent="space-between"
 			>
-				<ReactCrop crop={crop} onChange={setCrop}>
-					<Image
-						w="500px"
-						objectFit="contain"
-						src={src}
-						onLoad={V => setImage(V.currentTarget)}
-					/>
-				</ReactCrop>
+				<Flex w="500px">
+					<ReactCrop crop={crop} onChange={setCrop}>
+						<Image
+							w="500px"
+							objectFit="contain"
+							src={src}
+							onLoad={V => setImage(V.currentTarget)}
+						/>
+					</ReactCrop>
+				</Flex>
 
-				<HStack justifyContent="space-between">
+				<HStack w="500px" justifyContent="space-between">
 					<Button
 						colorScheme="yellow"
 						variant="outline"
@@ -123,6 +109,7 @@ const Correlation = () => {
 							accept="image/jpg, image/jpeg, image/png"
 							onChange={e => {
 								selectImage(e.target.files[0])
+								setImageCompare(e.target.files[0])
 							}}
 						/>
 						Escolher outro arquivo
@@ -144,6 +131,17 @@ const Correlation = () => {
 		),
 		[refImage, src, crop]
 	)
+
+	const handleInsertImage = useCallback(async () => {
+		const form = new FormData()
+
+		form.append('imageFiles', imageCompare)
+		form.append('imageCrop', cropState)
+
+		await handleInsertData(form, setData)
+		// form.append('imageFiles', null)
+		console.log(form)
+	}, [imageCompare, cropState])
 
 	const InfoSection = useMemo(
 		() => (
@@ -184,7 +182,7 @@ const Correlation = () => {
 						accept="image/jpg, image/jpeg, image/png"
 						onChange={e => {
 							selectImage(e.target.files[0])
-							console.log(e.target.files[0])
+							setImageCompare(e.target.files[0])
 						}}
 					/>
 					Escolha um arquivo
@@ -197,8 +195,8 @@ const Correlation = () => {
 	return (
 		<>
 			<Grid
-				w="100%"
-				templateColumns="1fr 1fr"
+				w="75%"
+				templateColumns={cropState ? '1fr 1fr' : '1fr'}
 				gap={32}
 				justifyContent="center"
 				alignItems="center"
@@ -210,16 +208,25 @@ const Correlation = () => {
 						w="100%"
 						h="100%"
 						py={16}
-						justifyContent="space-evenly"
+						justifyContent="space-between"
 						alignItems="center"
 						flexDir="column"
 					>
 						<Flex w="100%" flexDir="column">
-							<Text>Recorte</Text>
-							<Text>Area que será procurada</Text>
+							<Text fontSize="3xl" fontWeight="semibold">
+								Recorte
+							</Text>
+							<Text>Area de interesse</Text>
+
+							<Image
+								mt={8}
+								w="100%"
+								h="100%"
+								objectFit="contain"
+								src={output}
+							/>
 						</Flex>
 
-						<Image w="300px" h="300px" objectFit="contain" src={output} />
 						<Flex w="100%" justifyContent="right" alignItems="end">
 							<Button
 								bgColor="#ff8906"
@@ -227,8 +234,8 @@ const Correlation = () => {
 								p={6}
 								w="100px"
 								color="white"
-								onClick={async () => {
-									setNextStep(true)
+								onClick={() => {
+									handleInsertImage()
 								}}
 							>
 								Próximo
@@ -237,13 +244,15 @@ const Correlation = () => {
 					</Flex>
 				)}
 			</Grid>
-			{nextStep && (
-				<Flex>
-					<InputImage crop={cropState} form={form} setResult={setResult} />
+			{data && (
+				<Flex w={'100%'} mt={4} justifyContent="space-between">
+					<XGBoost title="XGBoost" xgboost={data?.classifications?.xgboost} />
+					<XGBoost
+						title="Random Forest"
+						xgboost={data?.classifications?.randomForest}
+					/>
 				</Flex>
 			)}
-
-			{resultImage}
 		</>
 	)
 }

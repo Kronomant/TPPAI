@@ -4,15 +4,21 @@ import { Button, Flex, Icon, Image, Spinner } from '@chakra-ui/react'
 import { ImageContainer, ImageCover } from './InputImage.style'
 import { AiOutlineSend } from 'react-icons/ai'
 import FormData from 'form-data'
-import { useImageProcessing } from 'contexts/Image'
+import { TImageProcessing, useImageProcessing } from 'contexts/Image'
 
 interface IInputImageProps {
 	form: FormData
 	crop?: File
 	setResult?: React.Dispatch<React.SetStateAction<boolean>>
+	setData?: React.Dispatch<React.SetStateAction<TImageProcessing>>
 }
 
-const InputImage: React.FC<IInputImageProps> = ({ form, crop, setResult }) => {
+const InputImage: React.FC<IInputImageProps> = ({
+	form,
+	crop,
+	setResult,
+	setData
+}) => {
 	const [preview, setPreview] = useState<string>()
 	const [loadingImage, setLoadingImage] = useState<boolean>(false)
 	const refImage = useRef<HTMLInputElement>(null)
@@ -26,7 +32,7 @@ const InputImage: React.FC<IInputImageProps> = ({ form, crop, setResult }) => {
 		form2.append('imageFiles', file)
 		crop ? form2.append('imageCrop', crop) : form2.append('imageCrop', file)
 
-		await handleInsertData(form2)
+		await handleInsertData(form2, setData)
 		setResult?.(true)
 		// form.append('imageCrop', file)
 		console.log(form)
@@ -39,7 +45,7 @@ const InputImage: React.FC<IInputImageProps> = ({ form, crop, setResult }) => {
 	}
 
 	const handleInsertImage = useCallback(async () => {
-		await handleInsertData(form)
+		await handleInsertData(form, setData)
 		// form.append('imageFiles', null)
 		console.log(form)
 		setResult?.(true)

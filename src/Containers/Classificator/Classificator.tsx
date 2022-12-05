@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState, useMemo } from 'react'
+import React, { useState } from 'react'
 import {
 	Image,
 	Flex,
@@ -6,7 +6,6 @@ import {
 	BreadcrumbItem,
 	BreadcrumbLink,
 	Text,
-	HStack,
 	Button,
 	Grid,
 	Icon
@@ -21,13 +20,10 @@ import Correlation from 'Components/Presentation/Correlation'
 import { AiOutlineSend } from 'react-icons/ai'
 import ServiceCard from 'Components/Presentation/ServiceCard'
 import ResNet from 'Components/Presentation/ResNet'
-import { useImageProcessing } from 'contexts/Image'
-import XGBoost from 'Components/Presentation/XGBoost'
 
 const Classificator: React.FC = () => {
 	const [cnn, setCnn] = useState<boolean>(false)
 	const [correlation, setCorrelation] = useState<boolean>(false)
-	const { classifications } = useImageProcessing()
 	const Header = () => (
 		<Grid>
 			<Flex w="100%" justifyContent="center">
@@ -70,6 +66,7 @@ const Classificator: React.FC = () => {
 				fontWeight="semibold"
 				fontFamily="Poppins"
 				color="#0C1E39"
+				textAlign={'center'}
 			>
 				Classificador
 			</Text>
@@ -226,21 +223,7 @@ const Classificator: React.FC = () => {
 					</Flex>
 				)}
 				{correlation && <Correlation />}
-				{cnn && <ResNet cnn={classifications?.classifications?.cnn} />}
-				<Flex w={'100%'} mt={4} justifyContent="space-between">
-					{cnn && (
-						<XGBoost
-							title="XGBoost"
-							xgboost={classifications?.classifications?.xgboost}
-						/>
-					)}
-					{cnn && (
-						<XGBoost
-							title="Random Forest"
-							xgboost={classifications?.classifications?.randomForest}
-						/>
-					)}
-				</Flex>
+				{cnn && <ResNet />}
 			</Flex>
 		</Container>
 	)

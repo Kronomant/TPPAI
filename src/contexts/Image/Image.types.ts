@@ -35,7 +35,6 @@ export type TClassifiers = {
 }
 
 export type TImageProcessing = {
-	correlation: string
 	classifications: TClassifiers
 }
 
@@ -43,5 +42,8 @@ export interface IImageContext {
 	classifications: TImageProcessing
 	setClassifications: React.Dispatch<React.SetStateAction<TImageProcessing>>
 	handleGetAllData: () => Promise<void>
-	handleInsertData: (data: FormData) => Promise<void>
+	handleInsertData: (
+		data: FormData,
+		callback: (args: TImageProcessing) => void
+	) => Promise<void>
 }

@@ -18,10 +18,11 @@ const ImageProvider: React.FC<AppProps> = ({ children }: AppProps) => {
 		console.log(status)
 	}, [])
 
-	const handleInsertData = useCallback(async (data: FormData) => {
+	const handleInsertData = useCallback(async (data: FormData, callback) => {
 		setClassifications(null)
 		const { response, status } = await insertData(data)
 		if (status === 200) {
+			callback(response)
 			setClassifications(response)
 		}
 	}, [])

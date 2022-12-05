@@ -1,20 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import InputImage from '../InputImage'
 import { Flex, HStack, Text } from '@chakra-ui/react'
 import FormData from 'form-data'
-import { TClassification, TCNN } from 'contexts/Image'
+import { TClassification, TCNN, TImageProcessing } from 'contexts/Image'
 import ClassifyCard from '../ClassifyCard'
 
-interface IResNetProps {
-	cnn: TCNN
-}
-
-const ResNet = ({ cnn }: IResNetProps) => {
+const ResNet = () => {
 	const form = new FormData()
+	const [data, setData] = useState<TImageProcessing>()
 	return (
 		<Flex w={'100%'} flexDir="column" alignItems="center">
-			<InputImage form={form} />
-			{cnn && (
+			<InputImage form={form} setData={setData} />
+			{data && (
 				<Flex
 					w={'100%'}
 					flexDir="column"
@@ -31,9 +28,11 @@ const ResNet = ({ cnn }: IResNetProps) => {
 							Classificação Binária
 						</Text>
 						<HStack>
-							{cnn?.binary?.map((item: TClassification) => (
-								<ClassifyCard key={item?.prob} data={item} />
-							))}
+							{data?.classifications?.cnn?.binary?.map(
+								(item: TClassification) => (
+									<ClassifyCard key={item?.prob} data={item} />
+								)
+							)}
 						</HStack>
 					</Flex>
 					<Flex w={'100%'} my={4} gap={8} flexDir="column">
@@ -41,9 +40,11 @@ const ResNet = ({ cnn }: IResNetProps) => {
 							Classificação por Grau
 						</Text>
 						<HStack>
-							{cnn?.degrees?.map((item: TClassification) => (
-								<ClassifyCard key={item?.prob} data={item} />
-							))}
+							{data?.classifications?.cnn?.degrees?.map(
+								(item: TClassification) => (
+									<ClassifyCard key={item?.prob} data={item} />
+								)
+							)}
 						</HStack>
 					</Flex>
 				</Flex>
