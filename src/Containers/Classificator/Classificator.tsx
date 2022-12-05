@@ -8,97 +8,201 @@ import {
 	Text,
 	HStack,
 	Button,
-	Grid
+	Grid,
+	Icon
 } from '@chakra-ui/react'
 import { ChevronRightIcon } from '@chakra-ui/icons'
-import ReactCrop, { Crop } from 'react-image-crop'
+
 import 'react-image-crop/dist/ReactCrop.css'
-import FormData from 'form-data'
 
 import Container from 'Components/Core/Container'
 
-import InputImage from 'Components/Presentation/InputImage'
+import Correlation from 'Components/Presentation/Correlation'
+import { AiOutlineSend } from 'react-icons/ai'
+import ServiceCard from 'Components/Presentation/ServiceCard'
+import ResNet from 'Components/Presentation/ResNet'
 import { useImageProcessing } from 'contexts/Image'
+import XGBoost from 'Components/Presentation/XGBoost'
 
-const Classificator = () => {
-	const [src, setSrc] = useState(null)
-	const [crop, setCrop] = useState<Crop>(null)
-	const [image, setImage] = useState<HTMLImageElement>(null)
-	const [output, setOutput] = useState(null)
-	const [preview, setPreview] = useState<string>()
-	const [nextStep, setNextStep] = useState<boolean>(false)
-	const [result, setResult] = useState<boolean>(false)
-	const [cropState, setCropState] = useState<File>(null)
+const Classificator: React.FC = () => {
+	const [cnn, setCnn] = useState<boolean>(false)
+	const [correlation, setCorrelation] = useState<boolean>(false)
 	const { classifications } = useImageProcessing()
-	const refImage = useRef<HTMLInputElement>(null)
+	const Header = () => (
+		<Grid>
+			<Flex w="100%" justifyContent="center">
+				<Breadcrumb
+					fontSize="lg"
+					spacing="8px"
+					separator={<ChevronRightIcon color="pink.500" />}
+				>
+					<BreadcrumbItem>
+						<BreadcrumbLink href="/">Página Inicial</BreadcrumbLink>
+					</BreadcrumbItem>
 
-	console.log(classifications)
+					<BreadcrumbItem>
+						<BreadcrumbLink
+							href="#"
+							onClick={() => {
+								setCnn(false)
+								setCorrelation(false)
+							}}
+						>
+							Start
+						</BreadcrumbLink>
+					</BreadcrumbItem>
 
-	const form = new FormData()
+					{cnn && (
+						<BreadcrumbItem>
+							<BreadcrumbLink href="#">ResNet</BreadcrumbLink>
+						</BreadcrumbItem>
+					)}
+					{correlation && (
+						<BreadcrumbItem>
+							<BreadcrumbLink href="#">Classificadores rasos</BreadcrumbLink>
+						</BreadcrumbItem>
+					)}
+				</Breadcrumb>
+			</Flex>
+			<Text
+				m="20px 0"
+				fontSize="5xl"
+				fontWeight="semibold"
+				fontFamily="Poppins"
+				color="#0C1E39"
+			>
+				Classificador
+			</Text>
+		</Grid>
+	)
 
-	const selectImage = useCallback((file: File) => {
-		if (file) {
-			setSrc(URL.createObjectURL(file))
-		}
-	}, [])
-
-	const handleOpenFileReader = (): void => {
-		if (refImage) {
-			refImage?.current?.click()
-		}
-	}
-
-	const cropImageNow = useCallback(() => {
-		const canvas = document.createElement('canvas')
-		const scaleX = image.naturalWidth / image.width
-		const scaleY = image.naturalHeight / image.height
-		canvas.width = crop.width
-		canvas.height = crop.height
-		const ctx = canvas.getContext('2d')
-
-		const pixelRatio = window.devicePixelRatio
-		canvas.width = crop.width * pixelRatio
-		canvas.height = crop.height * pixelRatio
-		ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0)
-		ctx.imageSmoothingQuality = 'high'
-
-		ctx.drawImage(
-			image,
-			crop.x * scaleX,
-			crop.y * scaleY,
-			crop.width * scaleX,
-			crop.height * scaleY,
-			0,
-			0,
-			crop.width,
-			crop.height
-		)
-
-		// Converting to base64
-		const base64Image = canvas.toDataURL('image/png')
-		setOutput(base64Image)
-
-		canvas.toBlob(blob => {
-			setCropState(new File([blob], 'crop.png', { type: 'image/png' }))
-			console.log(cropState)
-		})
-
-		setCrop(null)
-	}, [image, crop])
-
-	const resultImage = useMemo(
-		() =>
-			classifications?.length > 0 &&
-			result && (
-				<Flex>
-					<Image
-						h="250px"
-						src={`data:image/jpg;base64,${classifications}`}
-						objectFit="cover"
-					/>
+	const Card = () => (
+		<>
+			<Flex
+				fontSize="md"
+				w={'100%'}
+				gap={2}
+				h="100%"
+				color="gray.700"
+				justifyContent="space-between"
+			>
+				<Flex flexDir={'column'} gap={4} w={'60%'}>
+					<Text>
+						Correlação vai buscar uma area de interesse semelhante em outra
+						imagem, nesse caso a articulação do joelho, para isso : <br />
+					</Text>
+					<Flex ml={12}>
+						<ul>
+							<li>Escolha uma imagem;</li>
+							<li> Recorte na image escolhida a área de interesse;</li>
+							<li>Selecione outra imagem para fazer a correlação.</li>
+						</ul>
+					</Flex>
 				</Flex>
-			),
-		[classifications]
+
+				<Flex w={'40%'} gap={4}>
+					<Flex flexDir="column" alignItems="center" gap={1}>
+						<Image
+							w="175px"
+							h="175px"
+							objectFit="contain"
+							src="/images/crop.png"
+						/>
+						<Text fontWeight="bold"> Área de interesse</Text>
+					</Flex>
+					<Flex flexDir="column" alignItems="center" gap={1}>
+						<Image
+							w="175px"
+							h="175px"
+							objectFit="contain"
+							src="/images/correlation.png"
+						/>
+						<Text fontWeight="bold">Correlação</Text>
+					</Flex>
+				</Flex>
+			</Flex>
+			<Button
+				_hover={{ background: '#f25f4c', color: 'white' }}
+				w="150px"
+				h="40px"
+				p={6}
+				borderRadius="8px"
+				rightIcon={
+					<Icon as={AiOutlineSend} height="24px" w="24px" color="white" />
+				}
+				bgColor="orange.400"
+				color="white"
+				onClick={() => {
+					setCorrelation(true)
+				}}
+			>
+				<Text fontWeight="hairline">Acessar</Text>
+			</Button>
+		</>
+	)
+
+	const Classificar = () => (
+		<>
+			<Flex
+				fontSize="md"
+				w={'100%'}
+				gap={2}
+				h="100%"
+				color="gray.700"
+				justifyContent="space-between"
+			>
+				<Text w={'55%'}>
+					Classificar com CNN restNet, a classificação é feita de duas maneiras:
+					<br />
+					<br />
+					Primeiro classificando de forma binária, se o joelho possuí ou não
+					artrose.
+					<br /> Segunda classificando o grau de artrose, sendo o grau 0 joelho
+					saudavel e grau 4 o pior grau de artrose.
+				</Text>
+				<Flex w={'40%'} gap={4}>
+					<Flex flexDir="column" alignItems="center" gap={1}>
+						<Image
+							w="175px"
+							h="175px"
+							objectFit="contain"
+							src="/images/noartrose.png"
+						/>
+						<Text fontWeight="bold" fontSize="sm">
+							Sem Artrose; Grau 0
+						</Text>
+					</Flex>
+					<Flex flexDir="column" alignItems="center" gap={1}>
+						<Image
+							w="175px"
+							h="175px"
+							objectFit="contain"
+							src="/images/artrose.png"
+						/>
+						<Text fontWeight="bold" fontSize="sm">
+							Possuí Artrose; Grau 4
+						</Text>
+					</Flex>
+				</Flex>
+			</Flex>
+			<Button
+				_hover={{ background: '#f25f4c', color: 'white' }}
+				w="150px"
+				h="40px"
+				p={6}
+				borderRadius="8px"
+				rightIcon={
+					<Icon as={AiOutlineSend} height="24px" w="24px" color="white" />
+				}
+				bgColor="orange.400"
+				color="white"
+				onClick={() => {
+					setCnn(true)
+				}}
+			>
+				<Text fontWeight="hairline">Acessar</Text>
+			</Button>
+		</>
 	)
 
 	return (
@@ -111,178 +215,32 @@ const Classificator = () => {
 				flexDir="column"
 				alignItems="center"
 			>
-				<Grid>
-					<Flex w="100%" justifyContent="center">
-						<Breadcrumb
-							fontSize="lg"
-							spacing="8px"
-							separator={<ChevronRightIcon color="pink.500" />}
-						>
-							<BreadcrumbItem>
-								<BreadcrumbLink href="/">Página Inicial</BreadcrumbLink>
-							</BreadcrumbItem>
-
-							<BreadcrumbItem>
-								<BreadcrumbLink href="#">Start</BreadcrumbLink>
-							</BreadcrumbItem>
-						</Breadcrumb>
-					</Flex>
-					<Text
-						m="20px 0"
-						fontSize="5xl"
-						fontWeight="semibold"
-						fontFamily="Poppins"
-						color="#0C1E39"
-					>
-						Classificador
-					</Text>
-				</Grid>
-
-				<Grid
-					w="100%"
-					templateColumns="1fr 1fr"
-					gap={32}
-					justifyContent="center"
-					alignItems="center"
-				>
-					{src ? (
-						<Flex
-							h="800px"
-							flexDir="column"
-							w="85%"
-							py={16}
-							gap={8}
-							justifyContent="space-between"
-						>
-							<ReactCrop crop={crop} onChange={setCrop}>
-								<Image
-									w="100%"
-									objectFit="contain"
-									src={src}
-									onLoad={V => setImage(V.currentTarget)}
-								/>
-							</ReactCrop>
-
-							<HStack justifyContent="space-between">
-								<Button
-									colorScheme="yellow"
-									variant="outline"
-									onClick={() => {
-										handleOpenFileReader()
-										setCrop(null)
-										setOutput(null)
-									}}
-								>
-									<input
-										type="file"
-										hidden
-										ref={refImage}
-										formEncType="multipart/form-data"
-										accept="image/jpg, image/jpeg, image/png"
-										onChange={e => {
-											selectImage(e.target.files[0])
-											console.log(e.target.files[0])
-										}}
-									/>
-									Escolher outro arquivo
-								</Button>
-								<Button
-									bgColor="#ff8906"
-									w="100px"
-									_hover={{ bgColor: '#f25f4c' }}
-									p={4}
-									color="white"
-									onClick={() => {
-										cropImageNow()
-									}}
-								>
-									Crop
-								</Button>
-							</HStack>
-						</Flex>
-					) : (
-						<>
-							<Flex flexDir="column">
-								<Text fontSize="3xl" fontWeight="semibold">
-									Como Funciona ?
-								</Text>
-								<Text mt={4} fontSize="xl" color="gray.600">
-									Escolha uma imagem, recorte a area desejada após isso escolha
-									outra imagem para buscar o recorte nela
-								</Text>
-							</Flex>
-							<Image src="" />
-							<Button
-								bgColor="#ff8906"
-								_hover={{ bgColor: '#f25f4c' }}
-								p={6}
-								margin="0 auto"
-								w="200px"
-								color="white"
-								onClick={handleOpenFileReader}
-							>
-								<input
-									type="file"
-									hidden
-									ref={refImage}
-									formEncType="multipart/form-data"
-									accept="image/jpg, image/jpeg, image/png"
-									onChange={e => {
-										selectImage(e.target.files[0])
-										console.log(e.target.files[0])
-									}}
-								/>
-								Escolha um arquivo
-							</Button>
-						</>
-					)}
-
-					{output && (
-						<Flex
-							w="100%"
-							h="100%"
-							py={16}
-							justifyContent="space-evenly"
-							alignItems="center"
-							flexDir="column"
-						>
-							<Flex w="100%" flexDir="column">
-								<Text>Recorte</Text>
-								<Text>Area que será procurada</Text>
-							</Flex>
-
-							<Image w="60%" h="60%" objectFit="contain" src={output} />
-							<Flex w="100%" justifyContent="right" alignItems="end">
-								<Button
-									bgColor="#ff8906"
-									_hover={{ bgColor: '#f25f4c' }}
-									p={6}
-									w="100px"
-									color="white"
-									onClick={async () => {
-										setNextStep(true)
-										// handleSendData()
-									}}
-								>
-									Próximo
-								</Button>
-							</Flex>
-						</Flex>
-					)}
-				</Grid>
-				{nextStep && (
-					<Flex>
-						<InputImage
-							crop={cropState}
-							form={form}
-							preview={preview}
-							setPreview={setPreview}
-							setResult={setResult}
+				<Header />
+				{!correlation && !cnn && (
+					<Flex alignItems="center" flexDir="column" gap={4}>
+						<ServiceCard title="Classificadores Rasos" content={<Card />} />
+						<ServiceCard
+							title="Classificação resNet"
+							content={<Classificar />}
 						/>
 					</Flex>
 				)}
-
-				{resultImage}
+				{correlation && <Correlation />}
+				{cnn && <ResNet cnn={classifications?.classifications?.cnn} />}
+				<Flex w={'100%'} mt={4} justifyContent="space-between">
+					{cnn && (
+						<XGBoost
+							title="XGBoost"
+							xgboost={classifications?.classifications?.xgboost}
+						/>
+					)}
+					{cnn && (
+						<XGBoost
+							title="Random Forest"
+							xgboost={classifications?.classifications?.randomForest}
+						/>
+					)}
+				</Flex>
 			</Flex>
 		</Container>
 	)

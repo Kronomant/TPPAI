@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useState } from 'react'
 import { getData, insertData } from 'services/python.api'
-import { IImageContext, TClassification } from './Image.types'
+import { IImageContext, TClassification, TImageProcessing } from './Image.types'
 import FormData from 'form-data'
 export const ImageContext = createContext<IImageContext>({} as IImageContext)
 export const useImageProcessing = (): IImageContext => useContext(ImageContext)
@@ -10,7 +10,7 @@ interface AppProps {
 }
 
 const ImageProvider: React.FC<AppProps> = ({ children }: AppProps) => {
-	const [classifications, setClassifications] = useState<string>('')
+	const [classifications, setClassifications] = useState<TImageProcessing>()
 
 	const handleGetAllData = useCallback(async () => {
 		const { response, status } = await getData()
@@ -19,8 +19,8 @@ const ImageProvider: React.FC<AppProps> = ({ children }: AppProps) => {
 	}, [])
 
 	const handleInsertData = useCallback(async (data: FormData) => {
+		setClassifications(null)
 		const { response, status } = await insertData(data)
-		console.log(response)
 		if (status === 200) {
 			setClassifications(response)
 		}

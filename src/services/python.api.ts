@@ -1,4 +1,4 @@
-import { TClassification } from 'contexts/Image/Image.types'
+import { TClassification, TImageProcessing } from 'contexts/Image/Image.types'
 import API from './api'
 import FormData from 'form-data'
 import { toast } from 'react-toastify'
@@ -6,11 +6,10 @@ export const insertData = async (
 	data: FormData
 ): Promise<{
 	status: number
-	response: string
+	response: TImageProcessing
 }> => {
-	const resp = await API.post('upload-image', data)
+	const resp = await API.post('/', data)
 		.then(({ data, status }) => {
-			console.log(data)
 			toast.success('Classificação feita com sucesso!!!')
 			return { status, response: data }
 		})

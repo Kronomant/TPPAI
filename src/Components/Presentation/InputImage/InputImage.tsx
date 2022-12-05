@@ -7,33 +7,27 @@ import FormData from 'form-data'
 import { useImageProcessing } from 'contexts/Image'
 
 interface IInputImageProps {
-	preview: string
 	form: FormData
-	crop: File
-	setPreview: React.Dispatch<React.SetStateAction<string>>
-	setResult: React.Dispatch<React.SetStateAction<boolean>>
+	crop?: File
+	setResult?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const InputImage: React.FC<IInputImageProps> = ({
-	preview,
-	form,
-	crop,
-	setPreview,
-	setResult
-}) => {
+const InputImage: React.FC<IInputImageProps> = ({ form, crop, setResult }) => {
+	const [preview, setPreview] = useState<string>()
 	const [loadingImage, setLoadingImage] = useState<boolean>(false)
 	const refImage = useRef<HTMLInputElement>(null)
 
-	const { handleInsertData, setClassifications } = useImageProcessing()
+	const { handleInsertData } = useImageProcessing()
 
 	const handleInputImage = async (file: File) => {
 		const form2 = new FormData()
 		setLoadingImage(true)
 		// await sleep(1000)
 		form2.append('imageFiles', file)
-		form2.append('imageCrop', crop)
+		crop ? form2.append('imageCrop', crop) : form2.append('imageCrop', file)
+
 		await handleInsertData(form2)
-		setResult(true)
+		setResult?.(true)
 		// form.append('imageCrop', file)
 		console.log(form)
 		const objectUrl = URL.createObjectURL(file)
@@ -48,7 +42,7 @@ const InputImage: React.FC<IInputImageProps> = ({
 		await handleInsertData(form)
 		// form.append('imageFiles', null)
 		console.log(form)
-		setResult(true)
+		setResult?.(true)
 	}, [])
 
 	const handleOpenFileReader = (): void => {
